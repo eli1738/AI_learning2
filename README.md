@@ -1,91 +1,178 @@
-MNIST Digit Classifier
+# MNIST Digit Classifier with PyTorch
 
-A beginner PyTorch project that uses a neural network to recognize handwritten digits from the MNIST dataset.
+A beginner machine learning project built with PyTorch that trains a neural network to recognize handwritten digits from the MNIST dataset.
 
-Overview
+This project was built to learn the fundamentals of PyTorch and understand the basic machine learning workflow, including data loading, neural networks, loss functions, backpropagation, optimization, model evaluation, and confusion matrices.
 
-This project was built to learn the fundamentals of PyTorch and neural networks by creating a simple image classification model.
+## Project Overview
 
-The model takes a handwritten digit image as input and predicts which number it represents, from 0–9.
+The model takes a 28×28 grayscale image of a handwritten digit and predicts which number it represents (0–9).
 
-How It Works
+The basic process is:
 
-The neural network follows this basic process:
+1. Load the MNIST dataset
+2. Convert images into PyTorch tensors
+3. Load the data in batches
+4. Build a neural network
+5. Make predictions
+6. Calculate the loss
+7. Use backpropagation to calculate gradients
+8. Use the Adam optimizer to update the model's weights
+9. Repeat the process for multiple epochs
+10. Test the model on images it has never seen
+11. Measure accuracy
+12. Analyze predictions using a confusion matrix
 
-28 × 28 Image
-     ↓
-784 Pixels
-     ↓
-Linear Layer (784 → 128)
-     ↓
-ReLU Activation
-     ↓
-Linear Layer (128 → 10)
-     ↓
-Digit Prediction (0–9)
+## Dataset
 
-The model is trained using:
+The project uses the MNIST handwritten digit dataset.
 
-Cross Entropy Loss — measures how wrong the model's predictions are
-Adam Optimizer — updates the model's weights to improve its predictions
-Backpropagation — calculates how the model's weights should change
-Dataset
+- 60,000 training images
+- 10,000 testing images
+- Images are 28×28 pixels
+- 10 possible classes: digits 0–9
 
-This project uses the MNIST handwritten digit dataset, which contains:
+The dataset is downloaded automatically using `torchvision.datasets.MNIST`.
 
-60,000 training images
-10,000 testing images
-Images are 28 × 28 pixels
-10 possible classes: 0–9
+## Neural Network
 
-The dataset is automatically downloaded using torchvision.
+The final neural network architecture is:
+
+784 → 128 → 64 → 10
+
+input Layer
+
+Each image is 28×28 pixels:
+
+28 × 28 = 784
+
+The image is flattened into 784 values before being passed into the network.
+
+Hidden Layer 1
+784 → 128
+
+The first layer takes the 784 pixel values and learns 128 features from them.
+
+A ReLU activation function is applied after this layer.
+
+Hidden Layer 2
+128 → 64
+
+The second layer takes the 128 learned features and produces 64 higher-level features.
+
+Another ReLU activation function is applied.
+
+Output Layer
+64 → 10
+
+The final layer produces 10 scores, one for each possible digit.
+
+The digit with the highest score becomes the model's prediction.
+
+Training
+
+The model uses:
+
+Loss Function: Cross Entropy Loss
+Optimizer: Adam
+Learning Rate: 0.001
+Batch Size: 64
+Epochs: 10
+
+During training, the model follows this process:
+
+Image
+  ↓
+Forward Pass
+  ↓
+Prediction
+  ↓
+Calculate Loss
+  ↓
+Backpropagation
+  ↓
+Adam Optimizer
+  ↓
+Update Weights
+
+This process is repeated for every batch of training data.
 
 Results
+Baseline Model
 
-After training the model for 5 epochs, it achieved:
+The original model was:
 
-97.29% test accuracy
+784 → 128 → 10
 
-This means the model correctly classified approximately 9,729 out of 10,000 previously unseen handwritten digits.
+Test accuracy:
 
+97.29%
+
+Deeper Model
+
+The model was then changed to:
+
+784 → 128 → 64 → 10
+
+Results:
+
+Metric	Result
+Training Accuracy	99.31%
+Testing Accuracy	97.56%
+Final Training Loss	0.0212
+
+Adding the second hidden layer improved test accuracy from 97.29% to 97.56%, an improvement of 0.27 percentage points.
+
+The difference between training and testing accuracy also shows that the model performs slightly better on data it has already seen than on unseen data.
+
+Confusion Matrix
+
+A confusion matrix was used to analyze which digits the model has difficulty distinguishing.
+
+The rows represent the actual digit, while the columns represent the predicted digit.
+
+The diagonal represents correct predictions, while values outside the diagonal represent incorrect predictions.
+
+For example, the model had some difficulty recognizing handwritten 8s, with some actual 8s being predicted as 0, 3, or 5.
+
+This provides more information than accuracy alone because it shows which types of mistakes the model is making.
+
+What I Learned
+
+Through this project, I learned the fundamentals of building and training a neural network with PyTorch, including:
+
+Loading datasets with torchvision
+Using DataLoader to create batches
+Converting images to tensors
+Flattening image data
+Creating neural network layers with nn.Linear
+Using ReLU as an activation function
+Understanding forward passes
+Calculating loss with Cross Entropy Loss
+Using backpropagation
+Optimizing weights with Adam
+Training models over multiple epochs
+Evaluating models on unseen data
+Calculating training and testing accuracy
+Creating and interpreting confusion matrices
+Experimenting with neural network architecture
+Future Improvements
+
+Some possible future experiments include:
+
+Experimenting with different learning rates
+Testing different numbers of neurons
+Comparing different numbers of epochs
+Visualizing the confusion matrix
+Testing a convolutional neural network (CNN)
+Comparing different activation functions
+Experimenting with techniques to reduce overfitting
 Technologies Used
 Python
 PyTorch
 Torchvision
-MNIST
+Scikit-learn
+MNIST Dataset
+Goal
 
-What I Learned
-
-Through this project, I learned the basic PyTorch machine learning workflow:
-
-Loading and preparing a dataset
-Using DataLoader to process data in batches
-Building a neural network with torch.nn
-Understanding forward passes
-Using activation functions such as ReLU
-Calculating loss with Cross Entropy Loss
-Using backpropagation
-Training a model with the Adam optimizer
-Evaluating model accuracy on unseen data
-Future Improvements
-
-Some improvements I plan to make:
-
-Calculate and track average loss for each epoch
-Visualize model predictions
-Create a confusion matrix
-Experiment with different network architectures
-Experiment with different numbers of epochs and learning rates
-Improve the model's performance
-
-Running the Project
-
-Install the required packages:
-
-pip install torch torchvision
-
-Then run:
-
-python model.py
-
-The MNIST dataset will automatically download the first time the program is run.
+The goal of this project was not just to create a digit classifier, but to understand the basic process behind training a neural network and learn how different model choices affect performance.
